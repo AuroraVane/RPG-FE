@@ -12,7 +12,7 @@ SQ_SIZE = player_width = player_height = 50
 #Initialise image
 IMAGES = {}
 def loadImages():
-    units = ['pUnit','eUnit']
+    units = ['pUnit','eUnit','pCleric','eCleric','pMage','eMage','pKnight','eKnight','pLord','eLord','pSword','eSword','pVIP','eVIP']
     for unit in units:
         IMAGES[unit] = pygame.transform.scale(pygame.image.load("images/"+unit+".png"),(SQ_SIZE,SQ_SIZE))
 
@@ -25,7 +25,7 @@ def main():
     #Display
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("RPG-FE")
-    ICON = pygame.image.load('images/wp.png')
+    ICON = pygame.image.load('images/eUnit.png')
     pygame.display.set_icon(ICON)
 
     #System Requisites
