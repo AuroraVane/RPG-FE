@@ -7,14 +7,14 @@ screen_height = 400
 MAX_FPS = 15
 
 # Initialize size
-square_width = player_width = player_height = 50
+SQ_SIZE = player_width = player_height = 50
 
 #Initialise image
 IMAGES = {}
 def loadImages():
     units = ['pUnit','eUnit']
     for unit in units:
-        IMAGES[unit] = pygame.transform.scale(pygame.image.load("images/"+unit+".png"),(square_width,square_width))
+        IMAGES[unit] = pygame.transform.scale(pygame.image.load("images/"+unit+".png"),(SQ_SIZE,SQ_SIZE))
 
 # Game loop
 def main():
@@ -34,6 +34,11 @@ def main():
     loadImages()
 
     running = True
+
+    #Flags
+    sqSelected = () #Init nothing being selected
+    playerClicks = [] #Keep track of player clicks
+
     while running:
         # Handle events
         for event in pygame.event.get():
@@ -41,34 +46,24 @@ def main():
                 running = False
 
             # Player Select
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.Rect(player1_x, player1_y, player_width, player_height).collidepoint(event.pos):
-                    player1_color = (255, 255, 0)  # Change player 1 color to yellow
-                    player2_color = (0, 0, 255)
-                    player1_select = True
-                    player2_select = False
-                elif pygame.Rect(player2_x, player2_y, player_width, player_height).collidepoint(event.pos):
-                    player2_color = (255, 255, 0)  # Change player 2 color to yellow
-                    player1_color = (255, 0, 0)
-                    player2_select = True
-                    player1_select = False
-                else:
-                    if player1_select:
-                        col = (event.pos[0]) // square_width
-                        row = (event.pos[1]) // square_width
-                        player1_x = col * square_width
-                        player1_y = row * square_width
-                        player1_select = False
-                        print(col,row)
-                    elif player2_select:
-                        col = (event.pos[0]) // square_width
-                        row = (event.pos[1]) // square_width
-                        player2_x = col * square_width
-                        player2_y = row * square_width
-                        player2_select = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                location = pygame.mouse.get_pos()
+                mcol = location[0]//SQ_SIZE
+                mrow = location[1]//SQ_SIZE
 
-                    player1_color = (255, 0, 0)
-                    player2_color = (0, 0, 255)
+                if sqSelected == (mrow,mcol):
+                    sqSelected = ()
+                    playerClicks = []
+                else:
+                    sqSelected = (mrow,mcol)
+                    playerClicks.append(sqSelected)
+
+                if len(playerClicks) == 2:  
+                    move = FEengine.Move(playerClicks[0],playerClicks[1],gs.board)
+                    gs.makeMove(move)
+                    sqSelected = () #Reset user clicks
+                    playerClicks = [] #Reset user clicks
+                
 
         drawGameState(screen,gs)
 
@@ -90,18 +85,18 @@ def drawBoard(screen):
     for row in range(8):
         for col in range(12):
             if (row + col) % 2 == 0:
-                pygame.draw.rect(screen, (255, 255, 255), pygame.Rect((col * square_width), (row * square_width), square_width, square_width))
+                pygame.draw.rect(screen, (255, 255, 255), pygame.Rect((col * SQ_SIZE), (row * SQ_SIZE), SQ_SIZE, SQ_SIZE))
             else:
-                pygame.draw.rect(screen, (196, 164, 132), pygame.Rect((col * square_width), (row * square_width), square_width, square_width))
+                pygame.draw.rect(screen, (196, 164, 132), pygame.Rect((col * SQ_SIZE), (row * SQ_SIZE), SQ_SIZE, SQ_SIZE))
         for col in range(2):
-            pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(((5+col) * square_width), (row * square_width), square_width, square_width))
+            pygame.draw.rect(screen, (0, 0, 255), pygame.Rect(((5+col) * SQ_SIZE), (row * SQ_SIZE), SQ_SIZE, SQ_SIZE))
     
 def drawUnits(screen,board):
     for row in range(8):
         for col in range(12):
             unit = board[row][col]
             if unit != "--":
-                screen.blit(IMAGES[unit],pygame.Rect(col*square_width, row*square_width, square_width, square_width))
+                screen.blit(IMAGES[unit],pygame.Rect(col*SQ_SIZE, row*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 if __name__ == "__main__":
     main()
