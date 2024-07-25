@@ -45,7 +45,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-            # Player Select
+            # Mouse Handler
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 location = pygame.mouse.get_pos()
                 mcol = location[0]//SQ_SIZE
@@ -63,6 +63,11 @@ def main():
                     gs.makeMove(move)
                     sqSelected = () #Reset user clicks
                     playerClicks = [] #Reset user clicks
+            
+            #keyboard handler
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_z:
+                    gs.undoMove()
                 
 
         drawGameState(screen,gs)

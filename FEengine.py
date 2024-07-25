@@ -1,3 +1,5 @@
+import FEstack as stack
+
 class GameState():
     def __init__(self):
         #initialization of board
@@ -15,13 +17,22 @@ class GameState():
             ["--","pKnight","--","--","--","--","--","--","--","--","eSword","--"]
         ]
         self.playerMoveFirst = True
-        self.moveLog = []
+        self.moveLog = stack.Stack()
 
+    #Function to make a move to the board takes in a move object
     def makeMove(self,move):
         self.board[move.startRow][move.startCol] = "--"
         self.board[move.endRow][move.endCol] = move.UnitMoved
-        self.moveLog.append(move) #Log the move to undo it
+        self.moveLog.push([(move.startRow,move.startCol),(move.endRow,move.endCol)]) #Log the move to undo it
         self.playerMoveFirst = not self.playerMoveFirst
+
+    def undoMove(self):
+        if not self.moveLog.isEmpty():
+            print(self.moveLog.peek())
+            move = self.moveLog.pop()
+            self.board[move[0][0]][move[0][1]] = move.UnitMoved
+            self.board[move[1][0]][move[1][1]] = move.UnitCaptured
+            self.playerMoveFirst = not self.playerMoveFirst
     
 class Move():
     #Mapping of keys to values
