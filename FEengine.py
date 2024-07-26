@@ -23,15 +23,14 @@ class GameState():
     def makeMove(self,move):
         self.board[move.startRow][move.startCol] = "--"
         self.board[move.endRow][move.endCol] = move.UnitMoved
-        self.moveLog.push([(move.startRow,move.startCol),(move.endRow,move.endCol)]) #Log the move to undo it
+        self.moveLog.push([(move.startRow,move.startCol),(move.endRow,move.endCol),(move.UnitMoved,move.UnitCaptured)]) #Log the move to undo it
         self.playerMoveFirst = not self.playerMoveFirst
 
     def undoMove(self):
         if not self.moveLog.isEmpty():
-            print(self.moveLog.peek())
             move = self.moveLog.pop()
-            self.board[move[0][0]][move[0][1]] = move.UnitMoved
-            self.board[move[1][0]][move[1][1]] = move.UnitCaptured
+            self.board[move[0][0]][move[0][1]] = move[2][0] #unit moved
+            self.board[move[1][0]][move[1][1]] = move[2][1] #unit captured
             self.playerMoveFirst = not self.playerMoveFirst
     
 class Move():

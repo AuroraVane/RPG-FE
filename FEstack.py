@@ -18,12 +18,11 @@ class Stack:
         #Sanity check to empty stack
         if self.isEmpty():
             return None
-        return self.head.next.value
+        return self.head.data
     
     def push(self, value):
         node = Node(value)
-        print(value)
-        node.next = self.head #Make the new node point to the current head
+        node.next = self.head #Push the stack deeper
         self.head = node #Make the new node the head
         self.size += 1
     
@@ -33,4 +32,4 @@ class Stack:
         remove = self.head
         self.head = self.head.next
         self.size -= 1
-        return remove.value
+        return remove.data
