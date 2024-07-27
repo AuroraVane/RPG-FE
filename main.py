@@ -59,6 +59,7 @@ def main():
                     playerClicks.append(sqSelected)
 
                 if len(playerClicks) == 2:  
+                    gs.getValidMoves()
                     move = FEengine.Move(playerClicks[0],playerClicks[1],gs.board)
                     gs.makeMove(move)
                     sqSelected = () #Reset user clicks

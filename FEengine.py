@@ -32,6 +32,20 @@ class GameState():
             self.board[move[0][0]][move[0][1]] = move[2][0] #unit moved
             self.board[move[1][0]][move[1][1]] = move[2][1] #unit captured
             self.playerMoveFirst = not self.playerMoveFirst
+
+    #All legal moves
+    def getValidMoves(self):
+        return self.getAllMoves()
+    
+    #All moves
+    def getAllMoves(self):
+        moves = []
+        for r in range(len(self.board)):
+            for c in range(len(self.board[r])):
+                turn = self.board[r][c][0] #Check if its p or e
+                if (turn == 'p' and self.playerMoveFirst) or (turn == 'e' and not self.playerMoveFirst):
+                    piece = self.board[r][c][1:]
+                    print(piece)
     
 class Move():
     #Mapping of keys to values
