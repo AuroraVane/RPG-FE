@@ -39,13 +39,57 @@ class GameState():
     
     #All moves
     def getAllMoves(self):
-        moves = []
+        moves = [Move((0,1),(0,2),self.board)]
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):
                 turn = self.board[r][c][0] #Check if its p or e
                 if (turn == 'p' and self.playerMoveFirst) or (turn == 'e' and not self.playerMoveFirst):
                     piece = self.board[r][c][1:]
-                    print(piece)
+                    if piece == 'Unit':
+                        self.getUnitMoves(r,c,moves)
+                    elif piece == 'Cleric':
+                        self.getClericMoves(r,c,moves)
+                    elif piece == 'Mage':
+                        self.getMageMoves(r,c,moves)
+                    elif piece == 'Knight':
+                        self.getKnightMoves(r,c,moves)
+                    elif piece == 'Lord':
+                        self.getLordMoves(r,c,moves)
+                    elif piece == 'Sword':
+                        self.getSwordMoves(r,c,moves)
+                    elif piece == 'VIP':
+                        self.getVIPMoves(r,c,moves)
+        return moves
+
+    #Get all moves for Basic Unit 
+    def getUnitMoves(self,r,c,moves):
+        pass
+
+    #Get all moves for Cleric
+    def getClericMoves(self,r,c,moves):
+        pass
+
+    #Get all moves for Mage
+    def getMageMoves(self,r,c,moves):
+        pass   
+
+    #Get all moves for Knight
+    def getKnightMoves(self,r,c,moves):
+        pass
+
+    #Get all moves for Lord
+    def getLordMoves(self,r,c,moves):
+        pass
+
+    #Get all moves for Sword
+    def getSwordMoves(self,r,c,moves):
+        pass
+
+    #Get all moves for VIP
+    def getVIPMoves(self,r,c,moves):
+        pass
+
+
     
 class Move():
     #Mapping of keys to values
@@ -65,7 +109,13 @@ class Move():
         #Coordinates of units moved and captured
         self.UnitMoved = board[self.startRow][self.startCol]
         self.UnitCaptured = board[self.endRow][self.endCol]
+        self.moveID = self.startRow*1000 + self.startCol*100 + self.endRow*10 + self.endCol
 
+    #Overriding the equals method
+    def __eq__(self,other):
+        if isinstance(other,Move): return self.moveID == other.moveID
+        return False
+    
     def getNotation(self):
         #Change Notation to a chess notation
         return self.getRankFile(self.startRow,self.startCol) + self.getRankFile(self.endRow,self.endCol)

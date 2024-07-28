@@ -31,6 +31,8 @@ def main():
     #System Requisites
     clock = pygame.time.Clock()
     gs = FEengine.GameState() #gamestate
+    validMoves = gs.getValidMoves()
+    moveMade = False #Flag variable for when a move is made
     loadImages()
 
     running = True
@@ -59,9 +61,10 @@ def main():
                     playerClicks.append(sqSelected)
 
                 if len(playerClicks) == 2:  
-                    gs.getValidMoves()
                     move = FEengine.Move(playerClicks[0],playerClicks[1],gs.board)
-                    gs.makeMove(move)
+                    if move in validMoves:
+                        gs.makeMove(move)
+                        moveMade = True
                     sqSelected = () #Reset user clicks
                     playerClicks = [] #Reset user clicks
             
@@ -69,7 +72,12 @@ def main():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_z:
                     gs.undoMove()
+                    moveMade = True
                 
+
+        if moveMade:
+            validMoves = gs.getValidMoves()
+            moveMade = False
 
         drawGameState(screen,gs)
 
