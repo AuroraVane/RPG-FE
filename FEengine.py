@@ -39,7 +39,7 @@ class GameState():
     
     #All moves
     def getAllMoves(self):
-        moves = [Move((0,1),(0,2),self.board)]
+        moves = []
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):
                 turn = self.board[r][c][0] #Check if its p or e
@@ -75,11 +75,35 @@ class GameState():
 
     #Get all moves for Knight
     def getKnightMoves(self,r,c,moves):
-        pass
+        directions = ((-1,-2),(-2,-1),(-2,1),(-1,2),(1,-2),(2,-1),(2,1),(1,2))
+        allyColor = 'p' if self.playerMoveFirst else 'e'
+        for d in directions:
+            endRow = r + d[0]
+            endCol = c + d[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 12:
+                endPiece = self.board[endRow][endCol]
+                if endPiece == "--":
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
+                elif endPiece[0] == allyColor:
+                    continue
+                else:
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
 
     #Get all moves for Lord
     def getLordMoves(self,r,c,moves):
-        pass
+        directions = self.getDirectionArray(2)
+        allyColor = 'p' if self.playerMoveFirst else 'e'
+        for d in directions:
+            endRow = r + d[0]
+            endCol = c + d[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 12:
+                endPiece = self.board[endRow][endCol]
+                if endPiece == "--":
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
+                elif endPiece[0] == allyColor:
+                    continue
+                else:
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
 
     #Get all moves for Sword
     def getSwordMoves(self,r,c,moves):
@@ -89,6 +113,14 @@ class GameState():
     def getVIPMoves(self,r,c,moves):
         pass
 
+    def getDirectionArray(self,movementNum):
+        if movementNum == 1:
+            return [(-1,0),(0,-1),(0,1),(1,0)]
+        elif movementNum == 2:
+            return [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1),(0,2),(0,-2),(2,0),(-2,0)]
+        elif movementNum == 3:
+            return [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1),(0,2),(0,-2),(2,0),(-2,0),(2,2),(2,-2),(-2,2),(-2,-2)]
+    
 
     
 class Move():
