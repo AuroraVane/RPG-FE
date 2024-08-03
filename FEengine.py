@@ -63,19 +63,55 @@ class GameState():
 
     #Get all moves for Basic Unit 
     def getUnitMoves(self,r,c,moves):
-        pass
+        directions = self.getDirectionArray(2)
+        allyColor = 'p' if self.playerMoveFirst else 'e'
+        for d in directions:
+            endRow = r + d[0]
+            endCol = c + d[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 12:
+                endPiece = self.board[endRow][endCol]
+                if endPiece == "--":
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
+                elif endPiece[0] == allyColor:
+                    continue
+                else:
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
 
     #Get all moves for Cleric
     def getClericMoves(self,r,c,moves):
-        pass
+        directions = self.getDirectionArray(1)
+        allyColor = 'p' if self.playerMoveFirst else 'e'
+        for d in directions:
+            endRow = r + d[0]
+            endCol = c + d[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 12:
+                endPiece = self.board[endRow][endCol]
+                if endPiece == "--":
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
+                elif endPiece[0] == allyColor:
+                    continue
+                else:
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
 
     #Get all moves for Mage
     def getMageMoves(self,r,c,moves):
-        pass   
+        directions = self.getDirectionArray(1)
+        allyColor = 'p' if self.playerMoveFirst else 'e'
+        for d in directions:
+            endRow = r + d[0]
+            endCol = c + d[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 12:
+                endPiece = self.board[endRow][endCol]
+                if endPiece == "--":
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
+                elif endPiece[0] == allyColor:
+                    continue
+                else:
+                    moves.append(Move((r,c),(endRow,endCol),self.board))  
 
     #Get all moves for Knight
     def getKnightMoves(self,r,c,moves):
-        directions = ((-1,-2),(-2,-1),(-2,1),(-1,2),(1,-2),(2,-1),(2,1),(1,2))
+        directions = self.getDirectionArray(3)
         allyColor = 'p' if self.playerMoveFirst else 'e'
         for d in directions:
             endRow = r + d[0]
@@ -107,19 +143,46 @@ class GameState():
 
     #Get all moves for Sword
     def getSwordMoves(self,r,c,moves):
-        pass
+        directions = self.getDirectionArray(2)
+        allyColor = 'p' if self.playerMoveFirst else 'e'
+        for d in directions:
+            endRow = r + d[0]
+            endCol = c + d[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 12:
+                endPiece = self.board[endRow][endCol]
+                if endPiece == "--":
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
+                elif endPiece[0] == allyColor:
+                    continue
+                else:
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
 
     #Get all moves for VIP
     def getVIPMoves(self,r,c,moves):
-        pass
+        directions = self.getDirectionArray(1)
+        allyColor = 'p' if self.playerMoveFirst else 'e'
+        for d in directions:
+            endRow = r + d[0]
+            endCol = c + d[1]
+            if 0 <= endRow < 8 and 0 <= endCol < 12:
+                endPiece = self.board[endRow][endCol]
+                if endPiece == "--":
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
+                elif endPiece[0] == allyColor:
+                    continue
+                else:
+                    moves.append(Move((r,c),(endRow,endCol),self.board))
 
     def getDirectionArray(self,movementNum):
-        if movementNum == 1:
-            return [(-1,0),(0,-1),(0,1),(1,0)]
-        elif movementNum == 2:
-            return [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1),(0,2),(0,-2),(2,0),(-2,0)]
-        elif movementNum == 3:
-            return [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1),(0,2),(0,-2),(2,0),(-2,0),(2,2),(2,-2),(-2,2),(-2,-2)]
+        mov = []
+        if movementNum > 0:
+            mov += [(-1,0),(0,-1),(0,1),(1,0)]
+        if movementNum > 1:
+            mov += [(-1,-1),(-1,1),(1,-1),(1,1),(0,2),(0,-2),(2,0),(-2,0)]
+        if movementNum > 2:
+            mov += [(0,3),(0,-3),(3,0),(-3,0),(1,2),(1,-2),(2,1),(2,-1),(-1,2),(-1,-2),(-2,1),(-2,-1)]
+        
+        return mov
     
 
     
